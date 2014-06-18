@@ -15,10 +15,67 @@ namespace MvcMovie.Controllers
         private MovieDBContext db = new MovieDBContext();
 
         // GET: /Movies/
-        public ActionResult Index()
+        /*public ActionResult Index()
         {
             return View(db.Movies.ToList());
+        }*/
+
+
+        
+         //public ActionResult Index(string searchString )
+
+        //NB: {controller}/{action}/{id} so edit is below
+        //http://localhost:22403/Movies/Index/ghost
+        //public ActionResult Index(string id)
+
+        /*
+        //http://localhost:22403/Movies/Index?searchString=ghost
+         public ActionResult Index(string searchString )
+        {
+            //string searchString = id;
+            //LINQ (Language intergrated query)
+            var movies = from m in db.Movies
+                         select m; //SQL query - defined but not run against database
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                movies = movies.Where(s => s.Title.Contains(searchString));
+            } //s=> s.title is a lambda expression - method based linqs. 
+            // the query is executed in the view, not now.
+
+            return View(movies);
         }
+        */
+
+        public ActionResult Index(string movieGenre, string searchString)
+         {
+             var GenreList = new List<string>();
+
+             var GenQry = from d in db.Movies
+                          orderby d.Genre
+                          select d.Genre;
+
+             GenreList.AddRange(GenQry.Distinct());
+             ViewBag.movieGenre = new SelectList(GenreList);
+
+             var movies = from m in db.Movies
+                          select m;
+
+             if (!String.IsNullOrEmpty(searchString))
+             {
+                 movies = movies.Where(s => s.Title.Contains(searchString));
+             }
+
+             if (!string.IsNullOrEmpty(movieGenre))
+             {
+                 movies = movies.Where(x => x.Genre == movieGenre);
+             }
+
+             return View(movies);
+
+
+         }
+
 
         // GET: /Movies/Details/5
         public ActionResult Details(int? id)
@@ -44,8 +101,10 @@ namespace MvcMovie.Controllers
         // POST: /Movies/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        //
+        //
+        [HttpPost] //attribute restricted to post requests
+        [ValidateAntiForgeryToken] //also in view
         public ActionResult Create([Bind(Include="ID,Title,ReleaseDate,Genre,Price")] Movie movie)
         {
             if (ModelState.IsValid)

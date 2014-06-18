@@ -1,4 +1,9 @@
-﻿@model MvcMovie.Models.Movie
+﻿@model MvcMovie.Models.Movie 
+
+@* @model directive - type of object the view expects - allows access to that movie *@
+@* Model object that is strongly passed *@
+
+
 
 @{
     ViewBag.Title = "Details";
@@ -10,6 +15,7 @@
     <h4>Movie</h4>
 	<hr />
     <dl class="dl-horizontal">
+        @* HTML helpers are passed the strongly typed object "model" *@
         <dt>
             @Html.DisplayNameFor(model => model.Title)
         </dt>

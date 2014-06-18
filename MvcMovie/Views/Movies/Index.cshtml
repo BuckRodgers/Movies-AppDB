@@ -8,6 +8,20 @@
 
 <p>
     @Html.ActionLink("Create New", "Create")
+    @* beginForm helper causes the form to post to itself when user submits - clicking the filter button*@
+    @* this allows people to bookmark the search critearia results *@
+    @* eg: http://localhost:22403/Movies?SearchString=ghost*@
+    @*@using (Html.BeginForm()) *@
+    
+    @using (Html.BeginForm("Index", "Movies", FormMethod.Get))   
+     {
+    <p>
+        Genre: @Html.DropDownList("movieGenre", "All")
+        Title: @Html.TextBox("SearchString") <br />
+        <input type="submit" value="Filter" />
+    </p>
+    }
+    
 </p>
 <table class="table">
     <tr>

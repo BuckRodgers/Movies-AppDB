@@ -10,6 +10,7 @@
 @using (Html.BeginForm()) 
 {
     @Html.AntiForgeryToken()
+    @* generates a hidden form anti-forgery token that must match in the Edit method of the Movies controller  *@
     
     <div class="form-horizontal">
         <h4>Movie</h4>
