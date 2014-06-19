@@ -10,7 +10,7 @@ namespace MvcMovie.Migrations
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = false;
+            AutomaticMigrationsEnabled = true; //changed to true for appharbor
         }
 
         protected override void Seed(MvcMovie.Models.MovieDBContext context)
