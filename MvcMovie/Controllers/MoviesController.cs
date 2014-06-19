@@ -163,9 +163,12 @@ namespace MvcMovie.Controllers
             return View(movie);
         }
 
+        //could use this instead.
+        //public ActionResult Delete(FormCollection fcNotUsed, int id = 0)
+        //not using a delete link due to security holes
         // POST: /Movies/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
+        [HttpPost, ActionName("Delete")] //note- Delete, not DeleteConfirmed. (Changing names may confuse route table
+        [ValidateAntiForgeryToken] // POST, and unique signature for security
         public ActionResult DeleteConfirmed(int id)
         {
             Movie movie = db.Movies.Find(id);
