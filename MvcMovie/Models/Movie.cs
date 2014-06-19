@@ -27,7 +27,7 @@ namespace MvcMovie.Models
         public string Genre { get; set; }
 
         [Range(1,100)]
-        [DataType(DataType.Currency)]
+        [DataType(DataType.Currency)] // not a valadation attribute
         public decimal Price { get; set; }
 
         [RegularExpression(@"^[A-Z]+[a-zA-Z''-'\s]*$")]

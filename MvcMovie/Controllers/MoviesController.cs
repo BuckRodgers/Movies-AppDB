@@ -107,7 +107,7 @@ namespace MvcMovie.Controllers
         [ValidateAntiForgeryToken] //also in view
         public ActionResult Create([Bind(Include="ID,Title,ReleaseDate,Genre,Price,Rating")] Movie movie)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid) //the valadation annotations it checks in the model class
             {
                 db.Movies.Add(movie);
                 db.SaveChanges();
