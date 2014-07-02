@@ -29,3 +29,83 @@
         <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
     </div>
 </div>
+@* to run these buttons must be in http://localhost:22403/*@
+<h2>AJAX1</h2>
+<button type="button" onclick="loadXMLDoc()">Send JSON data</button>
+<div id="myDiv"></div>
+
+<h1>My jQuery JSON Web Page</h1>
+
+<div id="resultDivContainer"></div>
+
+<button type="button" onclick="JSONTest()">JSON Post</button>
+    
+
+    <script>
+        function loadXMLDoc() {
+
+            var xmlhttp;
+            if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+                xmlhttp = new XMLHttpRequest();
+            }
+            else {// code for IE6, IE5
+                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                    document.getElementById("myDiv").innerHTML = xmlhttp.responseText;
+                }
+            }
+
+
+            var movie = { ID: "13", Title: "Happy Hour", ReleaseDate: "1/1/1911", Genre: "Supers", Price: "33", Rating: "Good" };
+            @*$.ajax({
+                type: "POST",
+                data: JSON.stringify(movie),
+                url: "api/MovieApi",
+                contentType: "application/json"
+            });
+                *@
+            xmlhttp.open("POST", "api/MovieApi", true);
+            xmlhttp.setRequestHeader("Content-type", "application/json");
+            xmlhttp.send("JSON.stringify(movie)");
+
+        }
+
+    </script>
+
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript">
+
+        JSONTest = function () {
+
+            var resultDiv = $("#resultDivContainer");
+
+            $.ajax({
+                url: "api/MovieApi",
+                type: "POST",
+                data: { ID: "13", Title: "Happy Hour", ReleaseDate: "1/1/1911", Genre: "Supers", Price: "33", Rating: "Good" }@*{ apiKey: "23462", method: "example", ip: "208.74.35.5" }*@,
+                dataType: "json",
+                success: function (result) {
+                    switch (result) {
+                        case true:
+                            processResponse(result);
+                            break;
+                        default:
+                            resultDiv.html(result);
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert(xhr.status);
+                    alert(thrownError);
+                }
+            });
+        };
+
+    </script>
+
+
+
+
+
