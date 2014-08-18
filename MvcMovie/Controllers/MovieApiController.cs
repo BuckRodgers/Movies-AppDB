@@ -4,28 +4,47 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity.Validation;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
 using System.Web.Http;
 using System.Web.Mvc;
+using System.Web.Script.Serialization;
+using System.Web.Script.Services;
 
 namespace MvcMovie.Controllers
 {
+    //get CSV from https://drive.google.com/file/d/0B2KuoLJjG3sCNkJUaHBkaUpPY3c/edit?usp=sharing
+
+    //post password
+    //if password is ok carry on
+    //PASSWORD must be edited out before going into GIT / Appharbor
+
+    //1. Check file is updated (filename == newfilename)
+    //2. if yes dowload file to folder
+    //3. if not do nothing
+
+
+
     public class MovieApiController : ApiController  //derived from ApiController
     {
-
-        private MovieDBContext db = new MovieDBContext();
-
+        // api/movieapi/
         // Localhost/api/MovieApi/
         // GET api/<controller>
-        //public IEnumerable<Movie> Get()
+
+
+        private MovieDBContext db = new MovieDBContext();
+        private int update = 0;
+
+       
+        
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
         public string Get()
         {
-            //Movie myDeserializedObj = (Movie)JavaScriptConvert.DeserializeObject(Request["jsonString"], typeof(Movie));
-
-            //List<Movie> myDeserializedObjList = (List<Movie>)Newtonsoft.Json.JsonConvert.DeserializeObject(Request["jsonString"], typeof(List<Movie>));
-            
+        
             
             var GenreList = new List<string>();
 
@@ -39,13 +58,68 @@ namespace MvcMovie.Controllers
             var movies = from m in db.Movies
                          select m;
 
-            String json = JsonConvert.SerializeObject(movies);
-           
-
-            //return movies;
+            string json = JsonConvert.SerializeObject(movies);
             return json;
-            //return new string[] { "value1", "value2" };
         }
+
+
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+        public string Update()
+        {
+            
+
+            var GenreList = new List<string>();
+
+            var GenQry = from d in db.Movies
+                         orderby d.Genre
+                         select d.Genre;
+
+            GenreList.AddRange(GenQry.Distinct());
+
+
+            var movies = from m in db.Movies
+                         select m;
+
+            
+            string json = JsonConvert.SerializeObject(movies);
+
+            return json;
+         
+        }
+
+
+        /*
+        public HttpResponseMessage Get()
+        {
+            HttpResponseMessage response = new HttpResponseMessage();
+
+            var movies = from m in db.Movies
+                         select m;
+
+           /* string json = JsonConvert.SerializeObject(movies);
+            byte[] resultBytes = Encoding.UTF8.GetBytes(json);
+
+            response.Content = new StreamContent(new MemoryStream(resultBytes));
+            response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json; charset=utf-8");
+
+            return response;
+
+            */
+        /*
+ 
+            var s = new JavaScriptSerializer();
+            string jsonClient = s.Serialize(movies);
+            byte[] resultBytes = Encoding.UTF8.GetBytes(jsonClient);
+
+            response.Content = new StreamContent(new MemoryStream(resultBytes));
+
+            response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json; charset=utf-8");
+            //WebOperationContext.Current.OutgoingResponse.ContentType =
+            //    "application/json; charset=utf-8";
+
+            return response;//new MemoryStream(Encoding.UTF8.GetBytes(jsonClient));
+           
+        }*/
 
         // GET api/<controller>/5
         public string Get(int id)
@@ -122,5 +196,11 @@ namespace MvcMovie.Controllers
         public void Delete(int id)
         {
         }
+        /*
+        public int Update()
+        {
+            return update;
+        }
+         * */
     }
 }

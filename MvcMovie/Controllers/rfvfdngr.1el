@@ -6,28 +6,14 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using Google.Apis.Drive.v2;
 using MvcMovie.Models;
-using Google.Apis.Services;
-using Google.Apis.Auth.OAuth2;
-using Google.Apis.Auth;
-
 
 namespace MvcMovie.Controllers
 {
     public class MoviesController : Controller
     {
         private MovieDBContext db = new MovieDBContext();
-        
-       // private DriveService service;
-       // private UserCredential credential;
-       
 
-        BaseClientService service = new DriveService(new BaseClientService.Initializer()
-        {
-         //   HttpClientInitializer = credential,
-            ApplicationName = "Drive API Sample",
-        });
         // GET: /Movies/
         /*public ActionResult Index()
         {
@@ -191,7 +177,17 @@ namespace MvcMovie.Controllers
             return RedirectToAction("Index");
         }
 
-       
+        public ActionResult CVSfileAdded(int? whatWhat)
+        {
+            if (whatWhat == 22) //ToBeSubbedByAppHarbor
+            {
+                return View();
+            }
+            else
+            {
+                return View("~/Views/HelloWorld/Index.cshtml");
+            }
+        }
 
         protected override void Dispose(bool disposing)
         {
@@ -201,117 +197,5 @@ namespace MvcMovie.Controllers
             }
             base.Dispose(disposing);
         }
-
-
-        public ActionResult CVSfileAdded(int? id)
-        {
-
-            Config cfg = new Config();
-            TheKeyService tks = new TheKeyService(cfg);
-            
-
-
-            int key = Convert.ToInt32(tks.get());
-
-#warning change 22 to Variable configuration in Appharbour
-        
-            if (id == key) //ToBeSubbedByAppHarbor
-            {
-                //download file here
-                using (WebClient Client = new WebClient())
-                {
-                    //TODO: ensure no passwords are visable befoe commit
-                    //XXX
-#warning This may not be ready for commit
-#warning May want to set NOCHECKIN on svn or git rule
-
-//#error this may not be ready for commit
-                    //NOCHECKIN
-
-                    String downloadUrl = "https://drive.google.com/uc?export=download&id=0B2KuoLJjG3sCNkJUaHBkaUpPY3c"; // shared so no problem.
-                    String storedFile = AppDomain.CurrentDomain.BaseDirectory + "/SharedFiles/test.cvs";
-                    // note uc?export=download&id=
-                    // this enables me to fetch the info from the file.
-              
-
-                     
-
-                    var stream = service.HttpClient.GetStreamAsync(downloadUrl);
-                    var result = stream.Result;
-                    using (var fileStream = System.IO.File.Create(storedFile))//AppDomain.CurrentDomain.BaseDirectory + "/SharedFiles/test.cvs"))
-                    {
-                        result.CopyTo(fileStream);
-                    }
-
-                    /*
-
-                    try
-                    {
-                        Client.DownloadFile("https://drive.google.com/file/d/0B2KuoLJjG3sCNkJUaHBkaUpPY3c/edit?usp=sharing", "98MCW.cvs");
-                    }
-                    catch(WebException e)
-                    {
-                        throw e;
-                    }
-                    catch (ArgumentNullException e)
-                    {
-                        throw e;
-                    }
-                    */
-
-                }
-                //var textFromFile = (new WebClient()).DownloadString("https://drive.google.com/file/d/0B2KuoLJjG3sCNkJUaHBkaUpPY3c/edit?usp=sharing");
-
-                return View();
-            }
-            else
-            {
-                //not right code
-                return View("~/Views/HelloWorld/Index.cshtml");
-            }
-        }
-
-/*
-         public static System.IO.Stream DownloadFile(
-      IAuthenticator authenticator, File file) {
-    if (!String.IsNullOrEmpty(file.DownloadUrl)) {
-      try {
-        HttpWebRequest request = (HttpWebRequest)WebRequest.Create(
-            new Uri(file.DownloadUrl));
-        authenticator.ApplyAuthenticationToRequest(request);
-        HttpWebResponse response = (HttpWebResponse) request.GetResponse();
-        if (response.StatusCode == HttpStatusCode.OK) {
-          return response.GetResponseStream();
-        } else {
-          Console.WriteLine(
-              "An error occurred: " + response.StatusDescription);
-          return null;
-        }
-      } catch (Exception e) {
-        Console.WriteLine("An error occurred: " + e.Message);
-        return null;
-      }
-    } else {
-      // The file doesn't have any content stored on Drive.
-      return null;
-    }
-        */
-        
-        //to read a cvs file from google
-        //https://gist.github.com/dhlavaty/6121814
-        // add output=cvs to end of link
-
-        //    WebClientEx wc = new WebClientEx(new CookieContainer());
-        //    wc.Headers.Add("User-Agent", "Mozilla/5.0 (Windows NT 6.2; WOW64; rv:22.0) Gecko/20100101 Firefox/22.0");
-        //    wc.Headers.Add("DNT", "1");
-        //   wc.Headers.Add("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
-        //    wc.Headers.Add("Accept-Encoding", "deflate");
-        //    wc.Headers.Add("Accept-Language", "en-US,en;q=0.5");
- 
-        //    var outputCSVdata = wc.DownloadString(url);
-        //    Console.Write(outputCSVdata);
- 
-        
-         
     }
 }

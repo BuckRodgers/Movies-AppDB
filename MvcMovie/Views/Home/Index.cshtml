@@ -3,89 +3,113 @@
 }
 
 <div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="http://asp.net" class="btn btn-primary btn-large">Learn more &raquo;</a></p>
+    <h1>DanskVerber</h1>
+    <p class="lead">Using ASP.net, Appharbor, JSON, SQL</p>
+    <!-- <p><a href="http://asp.net" class="btn btn-primary btn-large">Learn more &raquo;</a></p>-->
 </div>
 
 <div class="row">
     <div class="col-md-4">
         <h2>Getting started</h2>
         <p>
-            ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-            enables a clean separation of concerns and gives you full control over markup
-            for enjoyable, agile development.
+           Reurn the database in JSON:
+            <br />
+
+            "Host"/api/MovieApi/
+            <br />
+            See the Database
+            <br/>
+            "Host"/movies/
+
+
+
+
+
         </p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
+       @* <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>*@
     </div>
     <div class="col-md-4">
         <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
+        <p</p>
+        @*<p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>*@
     </div>
     <div class="col-md-4">
         <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
+        <p></p>
+        @*<p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>*@
     </div>
 </div>
 @* to run these buttons must be in http://localhost:22403/*@
-<h2>AJAX1</h2>
-<button type="button" onclick="loadXMLDoc()">Send JSON data</button>
-<div id="myDiv"></div>
 
-<h1>My jQuery JSON Web Page</h1>
 
-<div id="resultDivContainer"></div>
 
-<button type="button" onclick="JSONTest()">JSON Post</button>
-    
 
-    <script>
-        function loadXMLDoc() {
+@*
+    <!--  Below are the JSON buttons-->
 
-            var xmlhttp;
-            if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
-                xmlhttp = new XMLHttpRequest();
-            }
-            else {// code for IE6, IE5
-                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-            }
-            xmlhttp.onreadystatechange = function () {
-                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-                    document.getElementById("myDiv").innerHTML = xmlhttp.responseText;
+        <h2>AJAX1</h2>
+        <button type="button" onclick="loadXMLDoc()">POST data to databse using JSON</button>
+
+
+        <div id="myDiv"></div>
+
+
+
+
+    <h1>POST data to databse using JSON JQuery</h1>
+
+    <div id="resultDivContainer"></div>
+
+    <button type="button" onclick="JSONTest()">JSON Post</button>
+
+
+        <script>
+            function loadXMLDoc() {
+
+                var xmlhttp;
+                if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+                    xmlhttp = new XMLHttpRequest();
                 }
+                else {// code for IE6, IE5
+                    xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+                }
+                xmlhttp.onreadystatechange = function () {
+                    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                        document.getElementById("myDiv").innerHTML = xmlhttp.responseText;
+                    }
+                }
+
+
+                var movie = { ID: "13", Title: "Happy Hour", ReleaseDate: "1/1/1911", Genre: "Supers", Price: "33", Rating: "Good" };
+                <!--$.ajax({
+                    type: "POST",
+                    data: JSON.stringify(movie),
+                    url: "api/MovieApi",
+                    contentType: "application/json"
+                });
+                      -->
+                xmlhttp.open("POST", "api/MovieApi", true);
+                xmlhttp.setRequestHeader("Content-type", "application/json");
+                xmlhttp.send("JSON.stringify(movie)");
+
             }
 
-
-            var movie = { ID: "13", Title: "Happy Hour", ReleaseDate: "1/1/1911", Genre: "Supers", Price: "33", Rating: "Good" };
-            @*$.ajax({
-                type: "POST",
-                data: JSON.stringify(movie),
-                url: "api/MovieApi",
-                contentType: "application/json"
-            });
-                *@
-            xmlhttp.open("POST", "api/MovieApi", true);
-            xmlhttp.setRequestHeader("Content-type", "application/json");
-            xmlhttp.send("JSON.stringify(movie)");
-
-        }
-
-    </script>
+        </script>
 
 
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-    <script type="text/javascript">
+    <!-- * Below is the working JSON post *-->
 
-        JSONTest = function () {
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+        <script type="text/javascript">
 
-            var resultDiv = $("#resultDivContainer");
+            JSONTest = function () {
 
-            $.ajax({
-                url: "api/MovieApi",
-                type: "POST",
-                data: { ID: "13", Title: "Happy Hour", ReleaseDate: "1/1/1911", Genre: "Supers", Price: "33", Rating: "Good" }@*{ apiKey: "23462", method: "example", ip: "208.74.35.5" }*@,
+                var resultDiv = $("#resultDivContainer");
+
+                $.ajax({
+                    url: "api/MovieApi",
+                    type: "POST",
+                    data: { ID: "13", Title: "Happy Hour", ReleaseDate: "1/1/1911", Genre: "Supers", Price: "33", Rating: "Good" }<!--{ apiKey: "23462", method: "example", ip: "208.74.35.5" }-->,
                 dataType: "json",
                 success: function (result) {
                     switch (result) {
@@ -106,6 +130,6 @@
     </script>
 
 
-
+*@
 
 
